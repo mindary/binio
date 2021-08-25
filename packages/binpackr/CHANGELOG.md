@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.1](https://gitr.net/mindary/binpackr/compare/binpackr@0.2.0...binpackr@0.2.1) (2021-08-25)
+
+**Note:** Version bump only for package binpackr
+
+
+
+
+
 # 0.2.0 (2021-08-25)
 
 
