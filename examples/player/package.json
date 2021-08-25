@@ -1,7 +1,7 @@
 {
   "name": "@binpackr/example-player",
   "description": "A simple binpackr example package",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "keywords": [],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -23,7 +23,7 @@
     "start": "node dist"
   },
   "dependencies": {
-    "binpackr": "^0.1.0"
+    "binpackr": "^0.2.0"
   },
   "devDependencies": {
     "@loopback/build": "^7.0.0",
