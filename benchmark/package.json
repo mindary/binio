@@ -19,7 +19,7 @@
     "test": "lb-mocha --allow-console-logs  \"dist/__tests__/**/*.js\"",
     "unit": "lb-mocha --allow-console-logs  \"dist/__tests__/unit/**/*.js\"",
     "verify": "npm pack && tar xf binpackr-benchmark*.tgz && tree package && npm run clean",
-    "prestart": "npm run clean && npm run build",
+    "prebenchmark": "npm run clean && npm run build",
     "benchmark": "node .",
     "start": "npm run benchmark"
   },

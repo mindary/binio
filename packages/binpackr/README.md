@@ -88,16 +88,14 @@ socket.on('chat', function (message) {
 
 | Library                     | Encode <br> speed | Encode <br> % of max | Decode <br> speed | Decode <br> % of max | Size | Size <br> % of json |
 | :-------------------------- | ----------------: | -------------------: | ----------------: | -------------------: | ---: | ------------------: |
-| avro                        |       5,069 kop/s |                 100% |       15,006 kops |                 100% |  15B |                 15% |
-| msgpackr(shared structures) |       1,747 kop/s |                  34% |        6,932 kops |                  46% |  20B |                 20% |
-| protobufjs                  |       1,660 kop/s |                  33% |        5,993 kops |                  40% |  29B |                 29% |
-| msgpackr                    |       1,496 kop/s |                  30% |        2,454 kops |                  16% |  71B |                 71% |
-| json                        |         701 kop/s |                  14% |          894 kops |                   6% | 100B |                100% |
-| binary-parser               |                 - |                    - |        1,124 kops |                   7% |  15B |                 15% |
-
-![Speed](https://quickchart.io/chart?c={type:"horizontalBar",data:{labels:["avro","msgpackr(shared structures)","protobufjs","msgpackr","json","binary-parser"],datasets:[{label:"Encode",data:[5069,1747,1660,1496,701,0]},{label:"Decode",data:[15006,6932,5993,2454,894,1124]}]},options:{title:{display:true,text:"Speed (op/s) - longer is better"},plugins:{tickFormat:{suffix:"k"}},scales:{xAxes:[{ticks:{callback:(value) => value.toLocaleString()}}]}}})
-
-![Size](https://quickchart.io/chart?c={type:"horizontalBar",data:{labels:["avro","binary-parser","msgpackr(shared structures)","protobufjs","msgpackr","json"],datasets:[{label:"Binary size",data:[15,15,20,29,71,100]}]},options:{title:{display:true,text:"Size - shorter is better"},plugins:{tickFormat:{suffix:"B"}}}})
+| binpackr(no validation)     |       7,878 kop/s |                 100% |       19,905 kops |                  98% |  13B |                 13% |
+| binpackr                    |       7,450 kop/s |                  95% |       20,384 kops |                 100% |  13B |                 13% |
+| avro                        |       4,870 kop/s |                  62% |       15,588 kops |                  76% |  15B |                 15% |
+| msgpackr(shared structures) |       2,020 kop/s |                  26% |        5,806 kops |                  28% |  20B |                 20% |
+| msgpackr                    |       1,768 kop/s |                  22% |        2,365 kops |                  12% |  71B |                 71% |
+| protobufjs                  |       1,587 kop/s |                  20% |        4,820 kops |                  24% |  29B |                 29% |
+| json                        |         750 kop/s |                  10% |          780 kops |                   4% | 100B |                100% |
+| binary-parser               |                 - |                    - |        1,161 kops |                   6% |  15B |                 15% |
 
 All benchmarks were performed on node/v16.7.0; Darwin; Intel(R) Core(TM) i9-8950HK CPU @ 2.90GHz
 

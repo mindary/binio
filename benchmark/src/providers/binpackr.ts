@@ -1,6 +1,6 @@
 import {Definition, Entry, Fixture, skip} from '../types';
 
-import provider from '../../../packages/binpackr';
+import provider from 'binpackr';
 
 export = async function prepare(fixture: Fixture, definition?: Definition): Promise<Entry[]> {
   if (!provider || !definition) {
