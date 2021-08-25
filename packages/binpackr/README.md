@@ -3,7 +3,7 @@
 > The fastest JavaScript object serialization library. Efficiently encode your objects in to compact byte buffers and
 > then decode them back in to objects on the receiver. Integrates very well with WebSockets.
 >
-> Binpack is initial forked from [binpack](https://github.com/phretaddin/binpack)
+> Binpack is initial forked from [schemapack](https://github.com/phretaddin/schemapack)
 
 ```ts
 // On both the client and server:
