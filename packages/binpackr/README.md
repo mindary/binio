@@ -95,11 +95,9 @@ socket.on('chat', function (message) {
 | json                        |         701 kop/s |                  14% |          894 kops |                   6% | 100B |                100% |
 | binary-parser               |                 - |                    - |        1,124 kops |                   7% |  15B |                 15% |
 
-![Speed](https://quickchart.io/chart?c={type:"horizontalBar",data:{labels:["avro","msgpackr(shared structures)","protobufjs","msgpackr","json","binary-parser"],datasets:[{label:"Encode",data:[5069,1747,1660,1496,701,0]},{label:"Decode",data:[15006,6932,5993,2454,894,1124]}]},options:{title:{display:true,text:"Speed (op/s) - longer is better"},plugins:{tickFormat:{suffix:"k"}},scales:{xAxes:[{ticks:{callback:(value) => value.toLocaleString()}}]}}}
-)
+![Speed](https://quickchart.io/chart?c={type:"horizontalBar",data:{labels:["avro","msgpackr(shared structures)","protobufjs","msgpackr","json","binary-parser"],datasets:[{label:"Encode",data:[5069,1747,1660,1496,701,0]},{label:"Decode",data:[15006,6932,5993,2454,894,1124]}]},options:{title:{display:true,text:"Speed (op/s) - longer is better"},plugins:{tickFormat:{suffix:"k"}},scales:{xAxes:[{ticks:{callback:(value) => value.toLocaleString()}}]}}})
 
-![Size](https://quickchart.io/chart?c={type:"horizontalBar",data:{labels:["avro","binary-parser","msgpackr(shared structures)","protobufjs","msgpackr","json"],datasets:[{label:"Binary size",data:[15,15,20,29,71,100]}]},options:{title:{display:true,text:"Size - shorter is better"},plugins:{tickFormat:{suffix:"B"}}}}
-)
+![Size](https://quickchart.io/chart?c={type:"horizontalBar",data:{labels:["avro","binary-parser","msgpackr(shared structures)","protobufjs","msgpackr","json"],datasets:[{label:"Binary size",data:[15,15,20,29,71,100]}]},options:{title:{display:true,text:"Size - shorter is better"},plugins:{tickFormat:{suffix:"B"}}}})
 
 All benchmarks were performed on node/v16.7.0; Darwin; Intel(R) Core(TM) i9-8950HK CPU @ 2.90GHz
 

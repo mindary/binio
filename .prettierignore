@@ -2,6 +2,7 @@
 /coverage
 packages/*/dist
 packages/*/build
+packages/binpackr/README.md
 examples/*/dist
 benchmark/dist
 *.json
