@@ -1,0 +1,18 @@
+{
+  "extends": "@loopback/build/config/tsconfig.common.json",
+  "compilerOptions": {
+    "composite": true
+  },
+  "references": [
+    {
+      "path": "benchmark/tsconfig.json"
+    },
+    {
+      "path": "examples/player/tsconfig.json"
+    },
+    {
+      "path": "packages/binpackr/tsconfig.json"
+    }
+  ],
+  "files": []
+}

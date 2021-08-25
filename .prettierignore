@@ -1,0 +1,9 @@
+.github/
+/coverage
+packages/*/dist
+packages/*/build
+examples/*/dist
+benchmark/dist
+*.json
+CHANGELOG.md
+*.yml

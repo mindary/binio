@@ -1,0 +1,6 @@
+{
+  "reject": [
+    "ora",
+    "terminal-link"
+  ]
+}

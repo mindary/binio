@@ -1,0 +1,30 @@
+# This file is a template, and might need editing before it works on your project.
+# Official framework image. Look for the different tagged releases at:
+# https://hub.docker.com/r/library/node/tags/
+image: node:lts
+
+# This folder is cached between builds
+# http://docs.gitlab.com/ce/ci/yaml/README.html#cache
+cache:
+  paths:
+    - node_modules/
+
+before_script:
+  - node --version
+  - npm --version
+  - npm ci
+  - npm run bootstrap
+  - npm run build:ci
+
+test:
+  script:
+    - npm run test:ci
+    - npm run coverage:summary
+  coverage: /Statements\s+:\s(\d+.?\d+)%/
+  artifacts:
+    when: always
+    paths:
+      # save coverage results
+      - coverage
+    expire_in: 10 days
+

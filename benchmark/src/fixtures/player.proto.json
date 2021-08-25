@@ -1,0 +1,41 @@
+{
+  "nested": {
+    "Player": {
+      "fields": {
+        "health": {
+          "type": "int32",
+          "id": 1
+        },
+        "jumping": {
+          "type": "bool",
+          "id": 2
+        },
+        "position": {
+          "rule": "repeated",
+          "type": "int32",
+          "id": 3
+        },
+        "attributes": {
+          "type": "Attributes",
+          "id": 4
+        }
+      }
+    },
+    "Attributes": {
+      "fields": {
+        "str": {
+          "type": "int32",
+          "id": 1
+        },
+        "agi": {
+          "type": "int32",
+          "id": 2
+        },
+        "int": {
+          "type": "int32",
+          "id": 3
+        }
+      }
+    }
+  }
+}

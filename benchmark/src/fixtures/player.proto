@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+message Player {
+    int32 health = 1;
+    bool  jumping = 2;
+    repeated int32 position = 3;
+    Attributes attributes = 4;
+}
+
+message Attributes {
+    int32 str = 1;
+    int32 agi = 2;
+    int32 int = 3;
+}

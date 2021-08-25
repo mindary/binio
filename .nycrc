@@ -1,0 +1,18 @@
+{
+  "include": [
+    "packages/*/dist",
+    "examples/*/dist"
+  ],
+  "exclude": [
+    "packages/*/dist/__tests__/",
+    "examples/*/dist/__tests__/"
+  ],
+  "extension": [
+    ".js",
+    ".ts"
+  ],
+  "reporter": [
+    "html"
+  ],
+  "exclude-after-remap": false
+}
