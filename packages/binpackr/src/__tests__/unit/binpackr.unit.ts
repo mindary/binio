@@ -50,7 +50,7 @@ describe('Binpack Unit Test', function () {
   describe('addTypeAlias', function () {
     it('should add type alias', function () {
       addTypeAlias('布尔', 'boolean');
-      const codec = build('布尔');
+      const codec = build('布尔' as const);
       expect(codec.decode(codec.encode(true))).is.true();
       expect(codec.decode(codec.encode(false))).is.false();
     });
@@ -132,8 +132,8 @@ describe('Binpack Unit Test', function () {
 
     describe('type errors', function () {
       it('should throw type not match error', function () {
-        const codec = build('int32');
-        expect(() => codec.encode('hello')).throw(/does not match the type/);
+        const codec = build('int32' as const);
+        expect(() => codec.encode('hello' as any)).throw(/does not match the type/);
       });
 
       it('should bounds error', function () {
@@ -161,7 +161,7 @@ describe('Binpack Unit Test', function () {
     describe('Uint8Array', function () {
       it('should decode with Uint8Array', function () {
         const arr = [1, 2, 3];
-        const codec = build(['uint8']);
+        const codec = build(['uint8'] as const);
         expect(codec.decode(new Uint8Array(codec.encode(arr)))).deepEqual(arr);
       });
     });

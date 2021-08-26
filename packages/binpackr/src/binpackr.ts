@@ -1,5 +1,6 @@
 import {Buffer} from 'buffer';
 import {
+  BTDDataType,
   BTDSchema,
   BUILTIN_TYPES,
   BuiltinType,
@@ -534,7 +535,7 @@ function getCompiledSchema(schema: BTDSchema, validate?: boolean) {
 
 addTypeAlias('bool', 'boolean');
 
-export function build(schema: BTDSchema, validate?: boolean): Codec {
+export function build<T extends BTDSchema = BTDSchema>(schema: T, validate?: boolean): Codec<BTDDataType<T>> {
   const [compiledEncode, compiledDecode] = getCompiledSchema(schema, validate ?? validateByDefault);
   return {
     encode(json) {

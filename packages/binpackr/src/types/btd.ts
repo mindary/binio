@@ -82,6 +82,6 @@ type BTDDataDef<S> = S extends NumberType
   ? []
   : S extends [...infer E, infer L] | Readonly<[...infer E, infer L]>
   ? [...{[I in keyof E]: BTDDataDef<E[I]>}, ...BTDDataDef<L>[]]
-  : never;
+  : unknown;
 
 export type BTDDataType<S> = BTDDataDef<S>;
