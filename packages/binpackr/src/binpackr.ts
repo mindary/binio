@@ -406,10 +406,12 @@ function getCompiledSchema(schema: BTDSchema, validate?: boolean) {
 
   function compileSchema(definition: any, inArray: boolean) {
     incID++;
-    const keys = Object.keys(definition).sort(function (a, b) {
-      /* istanbul ignore next */
-      return a < b ? -1 : a > b ? 1 : 0;
-    });
+
+    // const keys = Object.keys(definition).sort(function (a, b) {
+    //   /* istanbul ignore next */
+    //   return a < b ? -1 : a > b ? 1 : 0;
+    // });
+    const keys = Object.keys(definition);
 
     const saveID = incID;
 

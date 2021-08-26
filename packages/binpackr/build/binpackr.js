@@ -816,9 +816,7 @@
         const wrappedSchema = { a: schema };
         function compileSchema(definition, inArray) {
           incID++;
-          const keys = Object.keys(definition).sort(function(a, b) {
-            return a < b ? -1 : a > b ? 1 : 0;
-          });
+          const keys = Object.keys(definition);
           const saveID = incID;
           for (let i = 0; i < keys.length; i++) {
             let key = keys[i];

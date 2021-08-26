@@ -31,7 +31,7 @@ describe('Binpack Acceptance Test', function () {
 
       items.forEach(item => {
         const processed = built.decode(built.encode(item));
-        expect(processed).deepEqual(item);
+        expect(processed).eql(item);
       });
     });
   }
