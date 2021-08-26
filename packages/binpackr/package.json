@@ -2,7 +2,22 @@
   "name": "binpackr",
   "description": "The core package to create a schema object to encode/decode your JSON in to a compact byte buffer with no overhead.",
   "version": "0.2.6",
-  "keywords": [],
+  "keywords": [
+    "binary",
+    "packet",
+    "pack",
+    "packer",
+    "encode",
+    "decode",
+    "serialize",
+    "serializer",
+    "marshal",
+    "schema",
+    "codec",
+    "buffer",
+    "protocol",
+    "proto"
+  ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "engines": {
