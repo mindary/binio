@@ -1,3 +1,4 @@
+import {Buffer} from 'buffer';
 import {expect} from '@loopback/testlab';
 import {
   addTypeAlias,
@@ -10,7 +11,6 @@ import {
   StringEncoding,
 } from '../../binpackr';
 import {BTDDataType, BUILTIN_TYPES} from '../../types';
-import {Buffer} from 'buffer';
 
 describe('Binpack Unit Test', function () {
   let currentValidateByDefault: any;
@@ -140,6 +140,29 @@ describe('Binpack Unit Test', function () {
         const codec = build('int8');
         expect(() => codec.encode(-1234)).throw(/is less than minimum allowed value/);
         expect(() => codec.encode(1234)).throw(/is greater than maximum allowed value/);
+      });
+    });
+
+    describe('DataHolder', function () {
+      it('should decode with data holder', function () {
+        const message = 'Hello';
+        const codec = build('string');
+        const encoded = codec.encode(message);
+        const holder = {
+          data: Buffer.concat([Buffer.from([1, 2, 3]), encoded, Buffer.from([4, 5, 6])]),
+          offset: 3,
+        };
+        const decoded = codec.decode(holder);
+        expect(decoded).deepEqual(message);
+        expect(holder.offset).equal(3 + encoded.length);
+      });
+    });
+
+    describe('Uint8Array', function () {
+      it('should decode with Uint8Array', function () {
+        const arr = [1, 2, 3];
+        const codec = build(['uint8']);
+        expect(codec.decode(new Uint8Array(codec.encode(arr)))).deepEqual(arr);
       });
     });
   });

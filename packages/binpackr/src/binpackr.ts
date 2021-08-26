@@ -1,5 +1,16 @@
 import {Buffer} from 'buffer';
-import {BTDSchema, BUILTIN_TYPES, BuiltinType, Codec, ConstantType, DataType, isConstantType} from './types';
+import {
+  BTDSchema,
+  BUILTIN_TYPES,
+  BuiltinType,
+  Codec,
+  ConstantType,
+  DataHolder,
+  DataLike,
+  DataType,
+  isConstantType,
+  isDataLike,
+} from './types';
 
 export const StringEncoding: Readonly<BufferEncoding[]> = [
   'ascii',
@@ -378,8 +389,8 @@ function getXN(aStack: string[], id: number | string) {
 
 function getCompiledSchema(schema: BTDSchema, validate?: boolean) {
   let incID = 0;
-  let strEncodeFunction = 'bag.byteOffset=0;';
-  let strDecodeFunction = 'let ref1={}; bag.byteOffset=0;';
+  let strEncodeFunction = ''; //'bag.byteOffset=0;';
+  let strDecodeFunction = 'let ref1={};'; // bag.byteOffset=0;';
   let strByteCount = '';
   let strEncodeRefDecs = 'let ref1=json;';
 
@@ -527,13 +538,18 @@ export function build(schema: BTDSchema, validate?: boolean): Codec {
   const [compiledEncode, compiledDecode] = getCompiledSchema(schema, validate ?? validateByDefault);
   return {
     encode(json) {
+      bag.byteOffset = 0;
       const itemWrapper = {a: json};
       return compiledEncode(itemWrapper, bag);
     },
 
-    decode(buffer: Buffer | Uint8Array | ReadonlyArray<number>) {
-      const bufferWrapper = Buffer.isBuffer(buffer) ? buffer : Buffer.from(buffer);
-      return compiledDecode(bufferWrapper, bag);
+    decode(data: DataLike | DataHolder) {
+      const holder: DataHolder = isDataLike(data) ? {data, offset: 0} : data;
+      bag.byteOffset = holder.offset;
+      const buffer = Buffer.isBuffer(holder.data) ? holder.data : Buffer.from(holder.data);
+      const answer = compiledDecode(buffer, bag);
+      holder.offset = bag.byteOffset;
+      return answer;
     },
   };
 }

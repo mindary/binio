@@ -13,7 +13,7 @@
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
     "build": "lb-tsc",
-    "postbuild": "node ./scripts/build",
+    "postbuild": "node ./scripts/esbuild",
     "clean": "lb-clean binpackr*.tgz dist *.tsbuildinfo package",
     "pretest": "npm run clean && npm run build",
     "test": "lb-mocha --allow-console-logs  \"dist/__tests__/**/*.js\"",

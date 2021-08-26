@@ -45,10 +45,10 @@ type TypeEquality<T, E> = [T] extends [E] ? ([E] extends [T] ? true : false) : f
 type NullTypeEquality<T, E> = TypeEquality<T | null, E | null>;
 
 interface ObjectType {
-  [p: string]: SomeBTDSchema;
+  [p: string]: SomeBTDSchema | Readonly<SomeBTDSchema>;
 }
 
-type SomeBTDSchema = DataType | ObjectType | DeepReadonly<ObjectType> | Array<SomeBTDSchema>;
+type SomeBTDSchema = DataType | ObjectType | Array<SomeBTDSchema>;
 
 export type BTDSchema = SomeBTDSchema | Readonly<SomeBTDSchema>;
 
@@ -85,16 +85,3 @@ type BTDDataDef<S> = S extends NumberType
   : never;
 
 export type BTDDataType<S> = BTDDataDef<S>;
-
-// export const schema = ['bool', ['int8', ['varint'], 'varuint'], 'string'] as const;
-// export const data: BTDDataDef<typeof schema> = [
-//   true,
-//   [7, [-866, 4453, 5234234, 4543434, 4544666], 1, 100, 10000],
-//   'hi',
-// ];
-
-// type Message = {a: [boolean, [string, ...number[]], ...number[]]};
-//
-// const schema: BTDSchemaType<Message> = {a: ['boolean', ['string', 'uint8'], 'uint16']};
-//
-// console.log(schema);
