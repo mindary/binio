@@ -142,6 +142,7 @@ function getWriteTypeDictStr(dataType: BuiltinType, valStr: string) {
       return 'bag.writeVarInt(' + valStr + ', wBuffer);';
     case 'buffer':
       return 'bag.writeBuffer(' + valStr + ', wBuffer);';
+    /* istanbul ignore next */
     default:
       return '';
   }
