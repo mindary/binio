@@ -1,7 +1,7 @@
 {
   "name": "@binpackr/benchmark",
   "description": "Benchmarks measuring performance of Binpack",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "keywords": [],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -29,7 +29,7 @@
     "avsc": "^5.7.3",
     "benchmark": "^2.1.4",
     "binary-parser": "^1.9.2",
-    "binpackr": "^0.2.3",
+    "binpackr": "^0.2.4",
     "cbor": "^8.0.0",
     "msgpack-codec": "^1.0.5",
     "msgpack-js": "^0.3.0",
