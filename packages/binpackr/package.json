@@ -27,7 +27,7 @@
     "@loopback/build": "^7.0.0",
     "@loopback/eslint-config": "^11.0.0",
     "@loopback/testlab": "^3.4.2",
-    "@types/node": "^16.7.1",
+    "@types/node": "^16.7.2",
     "buffer": "^6.0.3",
     "esbuild": "^0.12.22"
   },

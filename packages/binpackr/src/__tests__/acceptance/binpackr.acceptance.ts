@@ -23,7 +23,7 @@ function loadFixture(name: string): {name: string; schema: BTDSchema; items: any
   return {name, ...require(`../fixtures/${name}`)};
 }
 
-describe('packer', function () {
+describe('Binpack Acceptance Test', function () {
   for (const fixture of fixtures) {
     it(`test ${fixture.name}`, function () {
       const {schema, items} = fixture;

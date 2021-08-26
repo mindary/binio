@@ -1,5 +1,19 @@
 import {Buffer} from 'buffer';
-import {BTDSchema, BUILTIN_TYPES, BuiltinType, Codec, ConstantType, isConstantType} from './types';
+import {BTDSchema, BUILTIN_TYPES, BuiltinType, Codec, ConstantType, DataType, isConstantType} from './types';
+
+export const StringEncoding: Readonly<BufferEncoding[]> = [
+  'ascii',
+  'utf8',
+  'utf-8',
+  'utf16le',
+  'ucs2',
+  'ucs-2',
+  'base64',
+  'base64url',
+  'latin1',
+  'binary',
+  'hex',
+] as const;
 
 let strEnc: BufferEncoding = 'utf8';
 let validateByDefault = true;
@@ -13,9 +27,9 @@ export function addTypeAlias(newTypeName: string, underlyingType: BuiltinType) {
   }
 }
 
-function getDataType(val: any): BuiltinType {
+export function getDataType(val: string): BuiltinType {
   const everyType = BUILTIN_TYPES;
-  let dataType = val.trim().toLowerCase();
+  let dataType = val.trim().toLowerCase() as any;
   if (dataType in aliasTypes) {
     dataType = aliasTypes[dataType];
   }
@@ -25,14 +39,21 @@ function getDataType(val: any): BuiltinType {
   return dataType;
 }
 
+export function getValidateByDefault() {
+  return validateByDefault;
+}
+
 export function setValidateByDefault(flag: boolean) {
   validateByDefault = flag;
 }
 
-export function setStringEncoding(stringEncoding: string) {
-  const requested = stringEncoding.trim().toLowerCase();
-  const available = ['ascii', 'utf8', 'utf16le', 'ucs2', 'base64', 'binary', 'hex'];
-  if (available.indexOf(requested) > -1) {
+export function getStringEncoding() {
+  return strEnc;
+}
+
+export function setStringEncoding(encoding: BufferEncoding) {
+  const requested = encoding.trim().toLowerCase();
+  if (StringEncoding.indexOf(requested as any) > -1) {
     strEnc = requested as BufferEncoding;
   } else {
     throw new TypeError('String encoding not available');
@@ -70,7 +91,7 @@ function readVarInt(buffer: Buffer) {
   return (val >>> 1) ^ -(val & 1);
 }
 
-function writeString(val: string, wBuffer: Buffer) {
+function writeString(val: string | undefined | null, wBuffer: Buffer) {
   const len = Buffer.byteLength(val || '', strEnc as any);
   writeVarUInt(len, wBuffer);
   bag.byteOffset += wBuffer.write(val || '', bag.byteOffset, len, strEnc as any);
@@ -254,6 +275,7 @@ function declareRepeatRefs(
 }
 
 function throwTypeError(valStr: string, typeStr: string, min: string, max: string, schemaType: string) {
+  /* istanbul ignore else */
   if (typeof valStr !== typeStr) {
     throw new TypeError(valStr + ' does not match the type of ' + typeStr);
   } else if (min !== undefined && valStr < min) {
@@ -342,7 +364,7 @@ function decodeValue(dataType: BuiltinType, id: number | string, prop: number | 
   return 'ref' + id + prop + '=' + readTypeDictStr[dataType];
 }
 
-function encodeByteCount(dataType: BuiltinType, id: number | string, prop: number | string) {
+function encodeByteCount(dataType: DataType, id: number | string, prop: number | string) {
   if (isConstantType(dataType)) {
     return 'byteC+=' + constantByteCounts[dataType] + ';';
   } else {
@@ -370,9 +392,10 @@ function getCompiledSchema(schema: BTDSchema, validate?: boolean) {
 
   const wrappedSchema = {a: schema};
 
-  function compileSchema(json: Record<string, any> | Array<any>, inArray: boolean) {
+  function compileSchema(definition: any, inArray: boolean) {
     incID++;
-    const keys = Object.keys(json).sort(function (a, b) {
+    const keys = Object.keys(definition).sort(function (a, b) {
+      /* istanbul ignore next */
       return a < b ? -1 : a > b ? 1 : 0;
     });
 
@@ -380,7 +403,7 @@ function getCompiledSchema(schema: BTDSchema, validate?: boolean) {
 
     for (let i = 0; i < keys.length; i++) {
       let key: string | number = keys[i];
-      const val = (json as any)[key];
+      const val = (definition as any)[key];
 
       if (inArray) {
         key = +key;
@@ -463,7 +486,7 @@ function getCompiledSchema(schema: BTDSchema, validate?: boolean) {
       } else {
         const index = inArray ? '' : '[' + prop + ']';
         const dataType = getDataType(val);
-        (json as any)[key] = dataType;
+        (definition as any)[key] = dataType;
 
         let repID = getXN(repEncArrStack, saveID);
         if (inArray) {
@@ -503,7 +526,7 @@ addTypeAlias('bool', 'boolean');
 export function build(schema: BTDSchema, validate?: boolean): Codec {
   const [compiledEncode, compiledDecode] = getCompiledSchema(schema, validate ?? validateByDefault);
   return {
-    encode(json: any) {
+    encode(json) {
       const itemWrapper = {a: json};
       return compiledEncode(itemWrapper, bag);
     },

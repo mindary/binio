@@ -21,18 +21,19 @@ export const NUMBER_TYPE = [...CONSTANT_NUMBER_TYPE, ...DYNAMIC_NUMBER_TYPE] as 
 
 export const BUILTIN_TYPES = [...CONSTANT_TYPE, ...DYNAMIC_TYPE] as const;
 
-export const DATA_TYPES = [...BUILTIN_TYPES, 'bool'] as const;
+export const DATA_TYPES = [...BUILTIN_TYPES] as const;
 
 export type ConstantType = ElementType<typeof CONSTANT_TYPE>;
 export type DynamicType = ElementType<typeof DYNAMIC_TYPE>;
 export type NumberType = ElementType<typeof NUMBER_TYPE>;
 export type BuiltinType = ElementType<typeof BUILTIN_TYPES>;
-export type DataType = ElementType<typeof DATA_TYPES>;
+export type DataType = ElementType<typeof DATA_TYPES> | string;
 
 export function isConstantType(t: string): t is ConstantType {
   return CONSTANT_TYPE.includes(t as any);
 }
 
+/* istanbul ignore next */
 export function isDynamicType(t: string): t is DynamicType {
   return DYNAMIC_TYPE.includes(t as any);
 }

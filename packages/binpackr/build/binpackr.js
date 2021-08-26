@@ -2279,7 +2279,7 @@
       exports.DYNAMIC_TYPE = [...exports.DYNAMIC_NUMBER_TYPE, "string", "buffer"];
       exports.NUMBER_TYPE = [...exports.CONSTANT_NUMBER_TYPE, ...exports.DYNAMIC_NUMBER_TYPE];
       exports.BUILTIN_TYPES = [...exports.CONSTANT_TYPE, ...exports.DYNAMIC_TYPE];
-      exports.DATA_TYPES = [...exports.BUILTIN_TYPES, "bool"];
+      exports.DATA_TYPES = [...exports.BUILTIN_TYPES];
       function isConstantType(t) {
         return exports.CONSTANT_TYPE.includes(t);
       }
@@ -2307,9 +2307,22 @@
     "dist/binpackr.js"(exports) {
       "use strict";
       Object.defineProperty(exports, "__esModule", { value: true });
-      exports.build = exports.setStringEncoding = exports.setValidateByDefault = exports.addTypeAlias = void 0;
+      exports.build = exports.setStringEncoding = exports.getStringEncoding = exports.setValidateByDefault = exports.getValidateByDefault = exports.getDataType = exports.addTypeAlias = exports.StringEncoding = void 0;
       var buffer_1 = require_buffer();
       var types_1 = require_types2();
+      exports.StringEncoding = [
+        "ascii",
+        "utf8",
+        "utf-8",
+        "utf16le",
+        "ucs2",
+        "ucs-2",
+        "base64",
+        "base64url",
+        "latin1",
+        "binary",
+        "hex"
+      ];
       var strEnc = "utf8";
       var validateByDefault = true;
       var aliasTypes = {};
@@ -2332,14 +2345,22 @@
         }
         return dataType;
       }
+      exports.getDataType = getDataType;
+      function getValidateByDefault() {
+        return validateByDefault;
+      }
+      exports.getValidateByDefault = getValidateByDefault;
       function setValidateByDefault(flag) {
         validateByDefault = flag;
       }
       exports.setValidateByDefault = setValidateByDefault;
-      function setStringEncoding(stringEncoding) {
-        const requested = stringEncoding.trim().toLowerCase();
-        const available = ["ascii", "utf8", "utf16le", "ucs2", "base64", "binary", "hex"];
-        if (available.indexOf(requested) > -1) {
+      function getStringEncoding() {
+        return strEnc;
+      }
+      exports.getStringEncoding = getStringEncoding;
+      function setStringEncoding(encoding) {
+        const requested = encoding.trim().toLowerCase();
+        if (exports.StringEncoding.indexOf(requested) > -1) {
           strEnc = requested;
         } else {
           throw new TypeError("String encoding not available");
@@ -2600,15 +2621,15 @@
         let tmpRepDecArr = "";
         let tmpRepByteCount = "";
         const wrappedSchema = { a: schema };
-        function compileSchema(json, inArray) {
+        function compileSchema(definition, inArray) {
           incID++;
-          const keys = Object.keys(json).sort(function(a, b) {
+          const keys = Object.keys(definition).sort(function(a, b) {
             return a < b ? -1 : a > b ? 1 : 0;
           });
           const saveID = incID;
           for (let i = 0; i < keys.length; i++) {
             let key = keys[i];
-            const val = json[key];
+            const val = definition[key];
             if (inArray) {
               key = +key;
             }
@@ -2655,7 +2676,7 @@
             } else {
               const index = inArray ? "" : "[" + prop + "]";
               const dataType = getDataType(val);
-              json[key] = dataType;
+              definition[key] = dataType;
               let repID = getXN(repEncArrStack, saveID);
               if (inArray) {
                 repID += isRepArrItem ? "[j" + saveID + "]" : "[" + i + "]";
