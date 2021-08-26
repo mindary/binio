@@ -27,7 +27,7 @@ export function log(
     indent?: string | number;
   },
 ) {
-  text = text ?? '';
+  text = text ?? ' ';
   // eslint-disable-next-line prefer-const
   let {header, footer, width, indent} = options ?? {};
   indent = typeof indent === 'number' ? repeat(' ', indent) : indent ?? '';

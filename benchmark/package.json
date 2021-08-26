@@ -40,6 +40,7 @@
     "notepack": "^0.0.2",
     "ora": "^5.4.1",
     "protobufjs": "^6.11.2",
+    "schemapack": "^1.4.2",
     "tily": "^2.8.3",
     "tosource": "^2.0.0-alpha.3",
     "ts-essentials": "^8.0.0"

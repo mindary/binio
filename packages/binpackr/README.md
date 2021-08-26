@@ -88,14 +88,16 @@ socket.on('chat', function (message) {
 
 | Library                     | Encode <br> speed | Encode <br> % of max | Decode <br> speed | Decode <br> % of max | Size | Size <br> % of json |
 | :-------------------------- | ----------------: | -------------------: | ----------------: | -------------------: | ---: | ------------------: |
-| binpackr(no validation)     |       7,878 kop/s |                 100% |       19,905 kops |                  98% |  13B |                 13% |
-| binpackr                    |       7,450 kop/s |                  95% |       20,384 kops |                 100% |  13B |                 13% |
-| avro                        |       4,870 kop/s |                  62% |       15,588 kops |                  76% |  15B |                 15% |
-| msgpackr(shared structures) |       2,020 kop/s |                  26% |        5,806 kops |                  28% |  20B |                 20% |
-| msgpackr                    |       1,768 kop/s |                  22% |        2,365 kops |                  12% |  71B |                 71% |
-| protobufjs                  |       1,587 kop/s |                  20% |        4,820 kops |                  24% |  29B |                 29% |
-| json                        |         750 kop/s |                  10% |          780 kops |                   4% | 100B |                100% |
-| binary-parser               |                 - |                    - |        1,161 kops |                   6% |  15B |                 15% |
+| binpackr(no validation)     |       7,465 kop/s |                 100% |       17,352 kops |                  92% |  13B |                 13% |
+| schemapack(no validation)   |       7,412 kop/s |                  99% |       18,857 kops |                 100% |  13B |                 13% |
+| binpackr                    |       7,213 kop/s |                  97% |       17,341 kops |                  92% |  13B |                 13% |
+| schemapack                  |       7,168 kop/s |                  96% |       17,836 kops |                  95% |  13B |                 13% |
+| avro                        |       5,064 kop/s |                  68% |       14,088 kops |                  75% |  15B |                 15% |
+| msgpackr(shared structures) |       1,982 kop/s |                  27% |        6,784 kops |                  36% |  20B |                 20% |
+| msgpackr                    |       1,677 kop/s |                  22% |        2,349 kops |                  12% |  71B |                 71% |
+| protobufjs                  |       1,603 kop/s |                  21% |        5,636 kops |                  30% |  29B |                 29% |
+| json                        |         749 kop/s |                  10% |          816 kops |                   4% | 100B |                100% |
+| binary-parser               |                 - |                    - |        1,097 kops |                   6% |  15B |                 15% |
 
 All benchmarks were performed on node/v16.7.0; Darwin; Intel(R) Core(TM) i9-8950HK CPU @ 2.90GHz
 
