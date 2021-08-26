@@ -5,6 +5,7 @@ packages/*/build
 packages/binpackr/README.md
 examples/*/dist
 benchmark/dist
+benchmark/BENCHMARKS.md
 *.json
 CHANGELOG.md
 *.yml
