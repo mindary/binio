@@ -442,12 +442,16 @@
     "dist/types/types.js"(exports) {
       "use strict";
       Object.defineProperty(exports, "__esModule", { value: true });
-      exports.isDataLike = void 0;
+      exports.isWritableBuffer = exports.isBufferLike = void 0;
       var buffer_1 = __require("buffer");
-      function isDataLike(x) {
+      function isBufferLike(x) {
         return buffer_1.Buffer.isBuffer(x) || Array.isArray(x) || x.buffer && typeof x.byteOffset === "number" && typeof x.byteLength === "number";
       }
-      exports.isDataLike = isDataLike;
+      exports.isBufferLike = isBufferLike;
+      function isWritableBuffer(x) {
+        return buffer_1.Buffer.isBuffer(x);
+      }
+      exports.isWritableBuffer = isWritableBuffer;
     }
   });
 
@@ -571,7 +575,9 @@
         writeVarUInt(value << 1 ^ value >> 31, wBuffer);
       }
       function readVarUInt(buffer) {
-        let val = 0, i = 0, b;
+        let val = 0;
+        let i = 0;
+        let b;
         do {
           b = buffer[bag.byteOffset++];
           val |= (b & 127) << 7 * i;
@@ -886,10 +892,10 @@
           }
         }
         compileSchema(wrappedSchema, false);
-        strByteCount = "let byteC=0;".concat(strByteCount, "let wBuffer=bag.allocUnsafe(byteC);");
+        strByteCount = "let byteC=0;".concat(strByteCount, "let wBuffer=buffer??bag.allocUnsafe(byteC);");
         strEncodeFunction = strEncodeRefDecs.concat(strByteCount, strEncodeFunction, "return wBuffer;");
         strDecodeFunction = strDecodeFunction.concat("return ref1['a'];");
-        const compiledEncode = new Function("json", "bag", strEncodeFunction);
+        const compiledEncode = new Function("json", "bag", "buffer", strEncodeFunction);
         const compiledDecode = new Function("buffer", "bag", strDecodeFunction);
         return [compiledEncode, compiledDecode];
       }
@@ -897,17 +903,21 @@
       function build(schema, validate) {
         const [compiledEncode, compiledDecode] = getCompiledSchema(schema, validate !== null && validate !== void 0 ? validate : validateByDefault);
         return {
-          encode(json) {
-            bag.byteOffset = 0;
-            const itemWrapper = { a: json };
-            return compiledEncode(itemWrapper, bag);
+          encode(source, writer) {
+            var _a;
+            bag.byteOffset = (_a = writer === null || writer === void 0 ? void 0 : writer.offset) !== null && _a !== void 0 ? _a : 0;
+            const itemWrapper = { a: source };
+            const answer = compiledEncode(itemWrapper, bag, writer === null || writer === void 0 ? void 0 : writer.data);
+            if (writer)
+              writer.offset = bag.byteOffset;
+            return answer;
           },
-          decode(data) {
-            const holder = types_1.isDataLike(data) ? { data, offset: 0 } : data;
-            bag.byteOffset = holder.offset;
-            const buffer = buffer_1.Buffer.isBuffer(holder.data) ? holder.data : buffer_1.Buffer.from(holder.data);
+          decode(source) {
+            const reader = types_1.isBufferLike(source) ? { data: source, offset: 0 } : source;
+            bag.byteOffset = reader.offset;
+            const buffer = buffer_1.Buffer.isBuffer(reader.data) ? reader.data : buffer_1.Buffer.from(reader.data);
             const answer = compiledDecode(buffer, bag);
-            holder.offset = bag.byteOffset;
+            reader.offset = bag.byteOffset;
             return answer;
           }
         };

@@ -1,20 +1,31 @@
 import {Buffer} from 'buffer';
 
-export type DataLike = Buffer | Uint8Array | ReadonlyArray<number>;
-export interface DataHolder {
-  data: DataLike;
+export type BufferLike = Buffer | Uint8Array | ReadonlyArray<number>;
+export type ReadableBuffer = BufferLike;
+export type WritableBuffer = Buffer;
+
+export interface BufferHolder<T> {
+  data: T;
   offset: number;
 }
 
+export type BufferReader = BufferHolder<ReadableBuffer>;
+export type BufferWriter = BufferHolder<WritableBuffer>;
+
 export interface Codec<T = any> {
-  encode(json: T): Buffer;
-  decode(data: DataLike | DataHolder): T;
+  encode(source: T, target?: WritableBuffer | BufferWriter): Buffer;
+
+  decode(source: ReadableBuffer | BufferReader): T;
 }
 
-export function isDataLike(x: any): x is DataLike {
+export function isBufferLike(x: any): x is BufferLike {
   return (
     Buffer.isBuffer(x) ||
     Array.isArray(x) ||
     (x.buffer && typeof x.byteOffset === 'number' && typeof x.byteLength === 'number')
   );
+}
+
+export function isWritableBuffer(x: any): x is WritableBuffer {
+  return Buffer.isBuffer(x);
 }

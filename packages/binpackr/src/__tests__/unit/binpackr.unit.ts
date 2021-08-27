@@ -160,10 +160,28 @@ describe('Binpack Unit Test', function () {
 
     describe('Uint8Array', function () {
       it('should decode with Uint8Array', function () {
-        const arr = [1, 2, 3];
+        const obj = [1, 2, 3];
         const codec = build(['uint8'] as const);
-        expect(codec.decode(new Uint8Array(codec.encode(arr)))).deepEqual(arr);
+        expect(codec.decode(new Uint8Array(codec.encode(obj)))).deepEqual(obj);
       });
+    });
+
+    it('encode with buffer writer', function () {
+      const obj = [1, 2, 3];
+      const codec = build(['uint8'] as const);
+      const writer = {
+        data: Buffer.allocUnsafe(1024),
+        offset: 0,
+      };
+      codec.encode(obj, writer);
+      expect(writer.offset).equal(obj.length + 1);
+      const reader = {
+        data: writer.data,
+        offset: 0,
+      };
+      const decoded = codec.decode(reader);
+      expect(reader.offset).equal(obj.length + 1);
+      expect(decoded).eql(obj);
     });
   });
 });

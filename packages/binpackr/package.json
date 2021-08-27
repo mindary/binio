@@ -44,7 +44,7 @@
     "@loopback/testlab": "^3.4.2",
     "@types/node": "^16.7.2",
     "buffer": "^6.0.3",
-    "esbuild": "^0.12.22"
+    "esbuild": "^0.12.23"
   },
   "files": [
     "README.md",

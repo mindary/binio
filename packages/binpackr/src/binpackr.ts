@@ -2,15 +2,17 @@ import {Buffer} from 'buffer';
 import {
   BTDDataType,
   BTDSchema,
+  BufferReader,
+  BufferWriter,
   BUILTIN_TYPES,
   BuiltinType,
   Codec,
   ConstantType,
-  DataHolder,
-  DataLike,
   DataType,
+  isBufferLike,
   isConstantType,
-  isDataLike,
+  ReadableBuffer,
+  WritableBuffer,
 } from './types';
 
 export const StringEncoding: Readonly<BufferEncoding[]> = [
@@ -85,9 +87,9 @@ function writeVarInt(value: number, wBuffer: Buffer) {
 }
 
 function readVarUInt(buffer: Buffer) {
-  let val = 0,
-    i = 0,
-    b: number;
+  let val = 0;
+  let i = 0;
+  let b: number;
 
   do {
     b = buffer[bag.byteOffset++];
@@ -103,7 +105,7 @@ function readVarInt(buffer: Buffer) {
   return (val >>> 1) ^ -(val & 1);
 }
 
-function writeString(val: string | undefined | null, wBuffer: Buffer) {
+function writeString(val: string | undefined | null, wBuffer: WritableBuffer) {
   const len = Buffer.byteLength(val || '', strEnc as any);
   writeVarUInt(len, wBuffer);
   bag.byteOffset += wBuffer.write(val || '', bag.byteOffset, len, strEnc as any);
@@ -116,7 +118,7 @@ function readString(buffer: Buffer) {
   return str;
 }
 
-function writeBuffer(val: Buffer, wBuffer: Buffer) {
+function writeBuffer(val: Buffer, wBuffer: WritableBuffer) {
   const len = val.length;
   writeVarUInt(len, wBuffer);
   val.copy(wBuffer, bag.byteOffset);
@@ -407,10 +409,6 @@ function getCompiledSchema(schema: BTDSchema, validate?: boolean) {
   function compileSchema(definition: any, inArray: boolean) {
     incID++;
 
-    // const keys = Object.keys(definition).sort(function (a, b) {
-    //   /* istanbul ignore next */
-    //   return a < b ? -1 : a > b ? 1 : 0;
-    // });
     const keys = Object.keys(definition);
 
     const saveID = incID;
@@ -525,11 +523,11 @@ function getCompiledSchema(schema: BTDSchema, validate?: boolean) {
 
   compileSchema(wrappedSchema, false);
 
-  strByteCount = 'let byteC=0;'.concat(strByteCount, 'let wBuffer=bag.allocUnsafe(byteC);');
+  strByteCount = 'let byteC=0;'.concat(strByteCount, 'let wBuffer=buffer??bag.allocUnsafe(byteC);');
   strEncodeFunction = strEncodeRefDecs.concat(strByteCount, strEncodeFunction, 'return wBuffer;');
   strDecodeFunction = strDecodeFunction.concat("return ref1['a'];");
 
-  const compiledEncode = new Function('json', 'bag', strEncodeFunction);
+  const compiledEncode = new Function('json', 'bag', 'buffer', strEncodeFunction);
   const compiledDecode = new Function('buffer', 'bag', strDecodeFunction);
 
   return [compiledEncode, compiledDecode];
@@ -540,18 +538,20 @@ addTypeAlias('bool', 'boolean');
 export function build<T extends BTDSchema = BTDSchema>(schema: T, validate?: boolean): Codec<BTDDataType<T>> {
   const [compiledEncode, compiledDecode] = getCompiledSchema(schema, validate ?? validateByDefault);
   return {
-    encode(json) {
-      bag.byteOffset = 0;
-      const itemWrapper = {a: json};
-      return compiledEncode(itemWrapper, bag);
+    encode(source, writer?: BufferWriter) {
+      bag.byteOffset = writer?.offset ?? 0;
+      const itemWrapper = {a: source};
+      const answer = compiledEncode(itemWrapper, bag, writer?.data);
+      if (writer) writer.offset = bag.byteOffset;
+      return answer;
     },
 
-    decode(data: DataLike | DataHolder) {
-      const holder: DataHolder = isDataLike(data) ? {data, offset: 0} : data;
-      bag.byteOffset = holder.offset;
-      const buffer = Buffer.isBuffer(holder.data) ? holder.data : Buffer.from(holder.data);
+    decode(source: ReadableBuffer | BufferReader) {
+      const reader: BufferReader = isBufferLike(source) ? {data: source, offset: 0} : source;
+      bag.byteOffset = reader.offset;
+      const buffer = Buffer.isBuffer(reader.data) ? reader.data : Buffer.from(reader.data);
       const answer = compiledDecode(buffer, bag);
-      holder.offset = bag.byteOffset;
+      reader.offset = bag.byteOffset;
       return answer;
     },
   };
