@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.8](https://gitr.net/mindary/binpackr/compare/@binpackr/benchmark@0.2.7...@binpackr/benchmark@0.2.8) (2021-08-27)
+
+**Note:** Version bump only for package @binpackr/benchmark
+
+
+
+
+
 ## [0.2.7](https://gitr.net/mindary/binpackr/compare/@binpackr/benchmark@0.2.6...@binpackr/benchmark@0.2.7) (2021-08-26)
 
 **Note:** Version bump only for package @binpackr/benchmark
