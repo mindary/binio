@@ -106,7 +106,7 @@ describe('Binpack Unit Test', function () {
         buffer: Buffer.from('Hello Binpackr'),
       };
 
-      it('should have exported compiled encode and compiled decode function for inspection', function() {
+      it('should have exported compiled encode and compiled decode function for inspection', function () {
         const codec = build(schema);
 
         const compiledEncode = codec[CompiledEncode];
