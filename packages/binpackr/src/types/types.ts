@@ -12,7 +12,13 @@ export interface BufferHolder<T> {
 export type BufferReader = BufferHolder<ReadableBuffer>;
 export type BufferWriter = BufferHolder<WritableBuffer>;
 
+export const CompiledEncode = Symbol('encode');
+export const CompiledDecode = Symbol('encode');
+
 export interface Codec<T = any> {
+  [CompiledEncode]: Function;
+  [CompiledDecode]: Function;
+
   encode(source: T, target?: WritableBuffer | BufferWriter): Buffer;
 
   decode(source: ReadableBuffer | BufferReader): T;

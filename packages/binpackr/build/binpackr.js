@@ -442,8 +442,10 @@
     "dist/types/types.js"(exports) {
       "use strict";
       Object.defineProperty(exports, "__esModule", { value: true });
-      exports.isWritableBuffer = exports.isBufferLike = void 0;
+      exports.isWritableBuffer = exports.isBufferLike = exports.CompiledDecode = exports.CompiledEncode = void 0;
       var buffer_1 = __require("buffer");
+      exports.CompiledEncode = Symbol("encode");
+      exports.CompiledDecode = Symbol("encode");
       function isBufferLike(x) {
         return buffer_1.Buffer.isBuffer(x) || Array.isArray(x) || x.buffer && typeof x.byteOffset === "number" && typeof x.byteLength === "number";
       }
@@ -903,6 +905,8 @@
       function build(schema, validate) {
         const [compiledEncode, compiledDecode] = getCompiledSchema(schema, validate !== null && validate !== void 0 ? validate : validateByDefault);
         return {
+          [types_1.CompiledEncode]: compiledEncode,
+          [types_1.CompiledDecode]: compiledDecode,
           encode(source, writer) {
             var _a;
             bag.byteOffset = (_a = writer === null || writer === void 0 ? void 0 : writer.offset) !== null && _a !== void 0 ? _a : 0;

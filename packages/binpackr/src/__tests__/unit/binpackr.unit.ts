@@ -10,7 +10,7 @@ import {
   setValidateByDefault,
   StringEncoding,
 } from '../../binpackr';
-import {BTDDataType, BUILTIN_TYPES} from '../../types';
+import {BTDDataType, BUILTIN_TYPES, CompiledDecode, CompiledEncode} from '../../types';
 
 describe('Binpack Unit Test', function () {
   let currentValidateByDefault: any;
@@ -106,6 +106,19 @@ describe('Binpack Unit Test', function () {
         buffer: Buffer.from('Hello Binpackr'),
       };
 
+      it('should have exported compiled encode and compiled decode function for inspection', function() {
+        const codec = build(schema);
+
+        const compiledEncode = codec[CompiledEncode];
+        const compiledDecode = codec[CompiledDecode];
+
+        expect(compiledEncode).is.Function();
+        expect(compiledDecode).is.Function();
+
+        expect(compiledEncode.toString()).match(/return wBuffer/);
+        expect(compiledDecode.toString()).match(/return ref1/);
+      });
+
       it('should encode and decode', function () {
         const codec = build(schema);
         expect(codec.decode(codec.encode(data))).deepEqual(data);
@@ -143,18 +156,18 @@ describe('Binpack Unit Test', function () {
       });
     });
 
-    describe('DataHolder', function () {
-      it('should decode with data holder', function () {
+    describe('BufferReader', function () {
+      it('should decode with buffer reader', function () {
         const message = 'Hello';
         const codec = build('string');
         const encoded = codec.encode(message);
-        const holder = {
+        const reader = {
           data: Buffer.concat([Buffer.from([1, 2, 3]), encoded, Buffer.from([4, 5, 6])]),
           offset: 3,
         };
-        const decoded = codec.decode(holder);
+        const decoded = codec.decode(reader);
         expect(decoded).deepEqual(message);
-        expect(holder.offset).equal(3 + encoded.length);
+        expect(reader.offset).equal(3 + encoded.length);
       });
     });
 

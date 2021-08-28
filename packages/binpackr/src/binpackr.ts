@@ -7,6 +7,8 @@ import {
   BUILTIN_TYPES,
   BuiltinType,
   Codec,
+  CompiledDecode,
+  CompiledEncode,
   ConstantType,
   DataType,
   isBufferLike,
@@ -300,7 +302,7 @@ function throwTypeError(valStr: string, typeStr: string, min: string, max: strin
 }
 
 function getCheckBufferStr(valStr: string) {
-  const throwMessage = 'bag.throwTypeError(' + valStr + ",'Buffer or Uint8Array');";
+  const throwMessage = 'bag.throwTypeError(' + valStr + ',\'Buffer or Uint8Array\');';
   return (
     'if (' +
     valStr +
@@ -313,16 +315,16 @@ function getCheckBufferStr(valStr: string) {
 }
 
 function getCheckDataTypeStr(valStr: string, typeStr: string) {
-  const throwMessage = 'bag.throwTypeError(' + valStr + ",'" + typeStr + "');";
-  return 'if (typeof(' + valStr + ") !== '" + typeStr + "'){" + throwMessage + '}';
+  const throwMessage = 'bag.throwTypeError(' + valStr + ',\'' + typeStr + '\');';
+  return 'if (typeof(' + valStr + ') !== \'' + typeStr + '\'){' + throwMessage + '}';
 }
 
 function getBoundsCheckStr(valStr: string, min: number, max: number, schemaType: string) {
-  const throwMessage = 'bag.throwTypeError(' + valStr + ",'number'," + min + ',' + max + ",'" + schemaType + "');";
+  const throwMessage = 'bag.throwTypeError(' + valStr + ',\'number\',' + min + ',' + max + ',\'' + schemaType + '\');';
   return (
     'if (typeof(' +
     valStr +
-    ") !== 'number'||" +
+    ') !== \'number\'||' +
     valStr +
     '<' +
     min +
@@ -382,7 +384,7 @@ function encodeByteCount(dataType: DataType, id: number | string, prop: number |
   if (isConstantType(dataType)) {
     return 'byteC+=' + constantByteCounts[dataType] + ';';
   } else {
-    return "byteC+=bag.dynamicByteCounts['" + dataType + "'](ref" + id + prop + ');';
+    return 'byteC+=bag.dynamicByteCounts[\'' + dataType + '\'](ref' + id + prop + ');';
   }
 }
 
@@ -392,8 +394,8 @@ function getXN(aStack: string[], id: number | string) {
 
 function getCompiledSchema(schema: BTDSchema, validate?: boolean) {
   let incID = 0;
-  let strEncodeFunction = ''; //'bag.byteOffset=0;';
-  let strDecodeFunction = 'let ref1={};'; // bag.byteOffset=0;';
+  let strEncodeFunction = '';
+  let strDecodeFunction = 'let ref1={};';
   let strByteCount = '';
   let strEncodeRefDecs = 'let ref1=json;';
 
@@ -421,7 +423,7 @@ function getCompiledSchema(schema: BTDSchema, validate?: boolean) {
         key = +key;
       }
 
-      const prop = typeof key === 'number' ? key : "'" + key + "'";
+      const prop = typeof key === 'number' ? key : '\'' + key + '\'';
       const container = Array.isArray(val) ? '[]' : '{}';
       const isRepArrItem = inArray && i >= keys.length - 1;
 
@@ -525,7 +527,7 @@ function getCompiledSchema(schema: BTDSchema, validate?: boolean) {
 
   strByteCount = 'let byteC=0;'.concat(strByteCount, 'let wBuffer=buffer??bag.allocUnsafe(byteC);');
   strEncodeFunction = strEncodeRefDecs.concat(strByteCount, strEncodeFunction, 'return wBuffer;');
-  strDecodeFunction = strDecodeFunction.concat("return ref1['a'];");
+  strDecodeFunction = strDecodeFunction.concat('return ref1[\'a\'];');
 
   const compiledEncode = new Function('json', 'bag', 'buffer', strEncodeFunction);
   const compiledDecode = new Function('buffer', 'bag', strDecodeFunction);
@@ -538,6 +540,8 @@ addTypeAlias('bool', 'boolean');
 export function build<T extends BTDSchema = BTDSchema>(schema: T, validate?: boolean): Codec<BTDDataType<T>> {
   const [compiledEncode, compiledDecode] = getCompiledSchema(schema, validate ?? validateByDefault);
   return {
+    [CompiledEncode]: compiledEncode,
+    [CompiledDecode]: compiledDecode,
     encode(source, writer?: BufferWriter) {
       bag.byteOffset = writer?.offset ?? 0;
       const itemWrapper = {a: source};
