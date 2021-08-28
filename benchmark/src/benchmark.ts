@@ -28,9 +28,46 @@ interface Score {
 
 type Scores = Score[];
 
+async function precheck(fixture: {name: string; data: any}, entries: Entry[]) {
+  for (const entry of entries) {
+    const spinner = ora();
+    spinner.start(`Checking ${entry.name}`);
+
+    // await oraPromise(async () => {
+    //   if (entry.skip) {
+    //     return {warn: `Skip ${entry.name}. ${entry.skip}`};
+    //   }
+    //
+    //   const encoded = entry.encoded ?? entry.encode?.(fixture.data);
+    //   if (!encoded) {
+    //     throw new Error(`Ignore ${entry.name}. It has no encoded data and encode function.`);
+    //   }
+    //
+    //   const decoded = entry.decode?.(encoded);
+    //   const real = JSON.parse(JSON.stringify(decoded));
+    //   expect(real).containDeep(fixture.data);
+    //   return `Checked ${entry.name}`;
+    //
+    // }, `Checking ${entry.name}`);
+
+    if (entry.skip) {
+      spinner.warn(`Skip ${entry.name}. ${entry.skip}`);
+      continue;
+    }
+
+    const encoded = entry.encoded ?? entry.encode?.(fixture.data);
+    if (!encoded) {
+      throw new Error(`Ignore ${entry.name}. It has no encoded data and encode function.`);
+    }
+
+    const decoded = entry.decode?.(encoded);
+    const real = JSON.parse(JSON.stringify(decoded));
+    expect(real).containDeep(fixture.data);
+  }
+}
+
 export async function run(fixtureName: string) {
-  console.log('Benchmarking ...');
-  console.log('===============================');
+  log('Benchmarking ...', {footer: '='});
 
   const fixture = {
     name: fixtureName,
@@ -42,23 +79,7 @@ export async function run(fixtureName: string) {
 
   log('Pre-Checking', {footer: '-'});
   // pre-check
-  entries.forEach(entry => {
-    const spinner = ora(`Checking ${entry.name}`).start();
-
-    if (entry.skip) {
-      return spinner.warn(`Skip ${entry.name}. ${entry.skip}`);
-    }
-
-    const encoded = entry.encoded ?? entry.encode?.(fixture.data);
-    if (!encoded) {
-      throw new Error(`Ignore ${entry.name}. It has no encoded data and encode function.`);
-    }
-
-    const decoded = entry.decode?.(encoded);
-    const real = JSON.parse(JSON.stringify(decoded));
-    expect(real).containDeep(fixture.data);
-    spinner.succeed();
-  });
+  await precheck(fixture, entries);
 
   log();
   log('Pre-Check Complete!');
