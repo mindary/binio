@@ -19,7 +19,6 @@ export = async function prepare(fixture: Fixture, definition?: Definition): Prom
     {
       name: 'schemapack(no validation)',
       encode: codecWithoutValidate.encode,
-      decode: codecWithoutValidate.decode,
     },
   ];
 };

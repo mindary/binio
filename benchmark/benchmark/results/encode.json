@@ -1,0 +1,69 @@
+{
+  "name": "Encode",
+  "date": "2021-08-29T14:43:28.221Z",
+  "version": "0.2.10",
+  "results": [
+    {
+      "name": "avro",
+      "ops": 5166397,
+      "margin": 1.05,
+      "percentSlower": 35.28
+    },
+    {
+      "name": "binio",
+      "ops": 7555246,
+      "margin": 0.67,
+      "percentSlower": 5.35
+    },
+    {
+      "name": "binio(no validation)",
+      "ops": 7735986,
+      "margin": 0.49,
+      "percentSlower": 3.09
+    },
+    {
+      "name": "json",
+      "ops": 795997,
+      "margin": 0.46,
+      "percentSlower": 90.03
+    },
+    {
+      "name": "msgpackr",
+      "ops": 1782097,
+      "margin": 1.73,
+      "percentSlower": 77.68
+    },
+    {
+      "name": "msgpackr(shared structures)",
+      "ops": 2056104,
+      "margin": 1.02,
+      "percentSlower": 74.24
+    },
+    {
+      "name": "protobufjs",
+      "ops": 1672791,
+      "margin": 1.53,
+      "percentSlower": 79.04
+    },
+    {
+      "name": "schemapack",
+      "ops": 7428666,
+      "margin": 0.63,
+      "percentSlower": 6.94
+    },
+    {
+      "name": "schemapack(no validation)",
+      "ops": 7982562,
+      "margin": 0.44,
+      "percentSlower": 0
+    }
+  ],
+  "fastest": {
+    "name": "schemapack(no validation)",
+    "index": 8
+  },
+  "slowest": {
+    "name": "json",
+    "index": 3
+  }
+}

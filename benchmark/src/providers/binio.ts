@@ -6,6 +6,7 @@ export = async function prepare(fixture: Fixture, definition?: Definition): Prom
   if (!provider || !definition) {
     return [skip('binio')];
   }
+
   const codec = provider.build(definition.schema, true);
   const codecWithoutValidate = provider.build(definition.schema, false);
 
@@ -18,7 +19,6 @@ export = async function prepare(fixture: Fixture, definition?: Definition): Prom
     {
       name: 'binio(no validation)',
       encode: codecWithoutValidate.encode,
-      decode: codecWithoutValidate.decode,
     },
   ];
 };

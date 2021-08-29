@@ -86,18 +86,45 @@ socket.on('chat', function (message) {
 
 ## Benchmarks
 
-| Library                     | Encode <br> speed | Encode <br> % of max | Decode <br> speed | Decode <br> % of max | Size | Size <br> % of json |
-| :-------------------------- | ----------------: | -------------------: | ----------------: | -------------------: | ---: | ------------------: |
-| schemapack(no validation)   |       6,983 kop/s |                 100% |       18,173 kops |                 100% |  13B |                 13% |
-| binio(no validation)        |       6,920 kop/s |                  99% |       15,953 kops |                  88% |  13B |                 13% |
-| binio                       |       6,816 kop/s |                  98% |       16,657 kops |                  92% |  13B |                 13% |
-| schemapack                  |       6,727 kop/s |                  96% |       17,801 kops |                  98% |  13B |                 13% |
-| avro                        |       4,999 kop/s |                  72% |       14,704 kops |                  81% |  15B |                 15% |
-| msgpackr(shared structures) |       1,902 kop/s |                  27% |        6,229 kops |                  34% |  20B |                 20% |
-| msgpackr                    |       1,657 kop/s |                  24% |        1,982 kops |                  11% |  71B |                 71% |
-| protobufjs                  |       1,533 kop/s |                  22% |        6,150 kops |                  34% |  29B |                 29% |
-| json                        |         691 kop/s |                  10% |          844 kops |                   5% | 100B |                100% |
-| binary-parser               |                 - |                    - |        1,052 kops |                   6% |  15B |                 15% |
+### Encode
+| Library                     |   Speed (ops/s) | % Slower |
+| :-------------------------- | --------------: | -------: |
+| schemapack(no validation)   | 7,982,562 ops/s |        - |
+| binio(no validation)        | 7,735,986 ops/s |    3.09% |
+| binio                       | 7,555,246 ops/s |    5.35% |
+| schemapack                  | 7,428,666 ops/s |    6.94% |
+| avro                        | 5,166,397 ops/s |   35.28% |
+| msgpackr(shared structures) | 2,056,104 ops/s |   74.24% |
+| msgpackr                    | 1,782,097 ops/s |   77.68% |
+| protobufjs                  | 1,672,791 ops/s |   79.04% |
+| json                        |   795,997 ops/s |   90.03% |
+
+### Decode
+| Library                     |    Speed (ops/s) | % Slower |
+| :-------------------------- | ---------------: | -------: |
+| binio                       | 19,010,955 ops/s |        - |
+| schemapack                  | 15,574,976 ops/s |   18.07% |
+| avro                        | 15,416,037 ops/s |   18.91% |
+| msgpackr(shared structures) |  6,138,161 ops/s |   67.71% |
+| protobufjs                  |  5,720,748 ops/s |   69.91% |
+| msgpackr                    |  2,366,068 ops/s |   87.55% |
+| binary-parser               |  1,159,752 ops/s |   93.90% |
+| json                        |    888,271 ops/s |   95.33% |
+
+### Encode Size
+| Library                     | Size (B) | % of JSON |
+| :-------------------------- | -------: | --------: |
+| binio                       |     13 B |       13% |
+| binio(no validation)        |     13 B |       13% |
+| schemapack                  |     13 B |       13% |
+| schemapack(no validation)   |     13 B |       13% |
+| avro                        |     15 B |       15% |
+| binary-parser               |     15 B |       15% |
+| msgpackr(shared structures) |     20 B |       20% |
+| protobufjs                  |     29 B |       29% |
+| msgpackr                    |     71 B |       71% |
+| json                        |    100 B |      100% |
+
 
 All benchmarks were performed on node/v16.7.0; Darwin; Intel(R) Core(TM) i9-8950HK CPU @ 2.90GHz
 
