@@ -917,11 +917,18 @@
             return answer;
           },
           decode(source) {
-            const reader = types_1.isBufferLike(source) ? { data: source, offset: 0 } : source;
-            bag.byteOffset = reader.offset;
-            const buffer = buffer_1.Buffer.isBuffer(reader.data) ? reader.data : buffer_1.Buffer.from(reader.data);
+            let data;
+            if (types_1.isBufferLike(source)) {
+              data = source;
+              bag.byteOffset = 0;
+            } else {
+              data = source.data;
+              bag.byteOffset = source.offset;
+            }
+            const buffer = buffer_1.Buffer.isBuffer(data) ? data : buffer_1.Buffer.from(data);
             const answer = compiledDecode(buffer, bag);
-            reader.offset = bag.byteOffset;
+            if (!types_1.isBufferLike(source))
+              source.offset = bag.byteOffset;
             return answer;
           }
         };

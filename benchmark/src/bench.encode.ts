@@ -11,7 +11,7 @@ export = (fixture: Fixture, entries: Entry[], {version}: {version: string}) => {
     ...fns,
     cycle(),
     complete(),
-    save({ file: 'encode', version: version }),
-    save({ file: 'encode', format: 'chart.html' }),
+    save({file: 'encode', version: version}),
+    save({file: 'encode', format: 'chart.html'}),
   );
-}
+};

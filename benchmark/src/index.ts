@@ -14,7 +14,7 @@ export async function run(fixtureName = 'player') {
   };
 
   const providers = new Providers();
-  let entries = await providers.loadAndPrepare(fixture)
+  let entries = await providers.loadAndPrepare(fixture);
 
   log('Pre-Checking', {footer: '-'});
   entries = await prepare(fixture, entries);

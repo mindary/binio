@@ -5,16 +5,17 @@ import {Entry} from './types';
 import {assert} from 'ts-essentials';
 
 export function reportSummary(summary: Summary) {
-  return markdownTable([
-    ['Library', 'Speed (ops/s)', '% Slower'],
-    ...summary.results.sort((a, b) => b.ops - a.ops).map(r => ([
-      r.name,
-      numberWithCommas(r.ops) + ' ops/s',
-      r.percentSlower ? r.percentSlower + '%' : '-',
-    ])),
-  ], {
-    align: ['l', 'r', 'r'],
-  });
+  return markdownTable(
+    [
+      ['Library', 'Speed (ops/s)', '% Slower'],
+      ...summary.results
+        .sort((a, b) => b.ops - a.ops)
+        .map(r => [r.name, numberWithCommas(r.ops) + ' ops/s', r.percentSlower ? r.percentSlower + '%' : '-']),
+    ],
+    {
+      align: ['l', 'r', 'r'],
+    },
+  );
 }
 
 export function reportEncodedSize(entries: Entry[]) {
@@ -30,14 +31,13 @@ export function reportEncodedSize(entries: Entry[]) {
     };
   });
 
-  return markdownTable([
-    ['Library', 'Size (B)', '% of JSON'],
-    ...summary.sort((a, b) => a.size - b.size).map(s => [
-      s.name,
-      s.size + ' B',
-      s.percentOfJson + '%',
-    ]),
-  ], {
-    align: ['l', 'r', 'r'],
-  });
+  return markdownTable(
+    [
+      ['Library', 'Size (B)', '% of JSON'],
+      ...summary.sort((a, b) => a.size - b.size).map(s => [s.name, s.size + ' B', s.percentOfJson + '%']),
+    ],
+    {
+      align: ['l', 'r', 'r'],
+    },
+  );
 }
