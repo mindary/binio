@@ -1,7 +1,7 @@
 {
   "name": "binio",
   "description": "The core package to create a schema object to encode/decode your JSON in to a compact byte buffer with no overhead.",
-  "version": "0.2.10",
+  "version": "0.3.0",
   "keywords": [
     "binary",
     "packet",

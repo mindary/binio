@@ -1,7 +1,7 @@
 {
   "name": "@binio/example-player",
   "description": "A simple binio example package",
-  "version": "0.2.10",
+  "version": "0.3.0",
   "keywords": [],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -23,7 +23,7 @@
     "start": "node dist"
   },
   "dependencies": {
-    "binio": "^0.2.10"
+    "binio": "^0.3.0"
   },
   "devDependencies": {
     "@loopback/build": "^7.0.0",

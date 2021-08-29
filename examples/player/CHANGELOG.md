@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 0.3.0 (2021-08-29)
+
+
+### Features
+
+* initial commit ([53b99f5](https://gitr.net/mindary/binio/commits/53b99f5436afcc939e305587092dfdb49e416843))
+* rename to binio ([ded9eed](https://gitr.net/mindary/binio/commits/ded9eedd38ffd67d9a34d4023ff95e5427f2a70b))
+
+
+
+
+
 ## [0.2.10](https://gitr.net/mindary/binio/compare/@binio/example-player@0.2.9...@binio/example-player@0.2.10) (2021-08-28)
 
 **Note:** Version bump only for package @binio/example-player

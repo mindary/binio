@@ -1,7 +1,7 @@
 {
   "name": "@binio/benchmark",
   "description": "Benchmarks measuring performance of Binpack",
-  "version": "0.2.10",
+  "version": "0.3.0",
   "keywords": [],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -29,7 +29,7 @@
     "avsc": "^5.7.3",
     "benny": "^3.6.15",
     "binary-parser": "^1.9.2",
-    "binio": "^0.2.10",
+    "binio": "^0.3.0",
     "cbor": "^8.0.0",
     "msgpack-codec": "^1.0.5",
     "msgpack-js": "^0.3.0",
