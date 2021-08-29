@@ -1,3 +1,3 @@
-# @binpackr/example-player
+# @binio/example-player
 
-> A simple binpackr example package
+> A simple binio example package

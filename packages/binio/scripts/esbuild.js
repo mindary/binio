@@ -1,7 +1,7 @@
 require('esbuild')
   .build({
     entryPoints: ['./dist/index.js'],
-    outfile: './build/binpackr.js',
+    outfile: './build/binio.js',
     external: ['buffer'],
     bundle: true,
     legalComments: 'none',
@@ -11,7 +11,7 @@ require('esbuild')
 require('esbuild')
   .build({
     entryPoints: ['./dist/index.js'],
-    outfile: './build/binpackr.min.js',
+    outfile: './build/binio.min.js',
     external: ['buffer'],
     bundle: true,
     minify: true,

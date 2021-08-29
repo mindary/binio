@@ -1,4 +1,4 @@
-# @binpackr/benchmark
+# @binio/benchmark
 
 > The benchmark module for Binpack
 

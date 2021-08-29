@@ -1,4 +1,4 @@
-import bp, {BTDDataType} from '../../../packages/binpackr';
+import bio, {BTDDataType} from '../../../packages/binio';
 
 // Define the schema
 const schema = {
@@ -17,7 +17,7 @@ const player: BTDDataType<typeof schema> = {
 };
 
 // Build the codec
-const codec = bp.build(schema);
+const codec = bio.build(schema);
 
 // Encode
 const buffer = codec.encode(player);

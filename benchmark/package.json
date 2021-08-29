@@ -1,5 +1,5 @@
 {
-  "name": "@binpackr/benchmark",
+  "name": "@binio/benchmark",
   "description": "Benchmarks measuring performance of Binpack",
   "version": "0.2.10",
   "keywords": [],
@@ -14,11 +14,11 @@
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
     "build": "lb-tsc",
-    "clean": "lb-clean binpackr-benchmark*.tgz dist *.tsbuildinfo package",
+    "clean": "lb-clean binio-benchmark*.tgz dist *.tsbuildinfo package",
     "pretest": "npm run clean && npm run build",
     "test": "lb-mocha --allow-console-logs  \"dist/__tests__/**/*.js\"",
     "unit": "lb-mocha --allow-console-logs  \"dist/__tests__/unit/**/*.js\"",
-    "verify": "npm pack && tar xf binpackr-benchmark*.tgz && tree package && npm run clean",
+    "verify": "npm pack && tar xf binio-benchmark*.tgz && tree package && npm run clean",
     "prebenchmark": "npm run clean && npm run build",
     "benchmark": "node .",
     "start": "npm run benchmark"
@@ -29,7 +29,7 @@
     "avsc": "^5.7.3",
     "benchmark": "^2.1.4",
     "binary-parser": "^1.9.2",
-    "binpackr": "^0.2.10",
+    "binio": "^0.2.10",
     "cbor": "^8.0.0",
     "msgpack-codec": "^1.0.5",
     "msgpack-js": "^0.3.0",

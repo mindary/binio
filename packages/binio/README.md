@@ -1,4 +1,4 @@
-# binpackr
+# binio
 
 > The fastest JavaScript object serialization library. Efficiently encode your objects in to compact byte buffers and
 > then decode them back in to objects on the receiver. Integrates very well with WebSockets.
@@ -7,7 +7,7 @@
 
 ```ts
 // On both the client and server:
-import bp, {BTDDataType} from 'binpackr';
+import bio, {BTDDataType} from 'binio';
 
 const schema = {
   health: "varuint",
@@ -24,7 +24,7 @@ const player: BTDDataType<typeof schema> =  {
   attributes: { str: 87, agi: 42, int: 22 }
 };
 
-const codec = bp.build(schema);
+const codec = bio.build(schema);
 
 const buffer = codec.encode(player);
 socket.emit('player-message', buffer); // Use some JavaScript WebSocket library to get this socket variable.
@@ -89,8 +89,8 @@ socket.on('chat', function (message) {
 | Library                     | Encode <br> speed | Encode <br> % of max | Decode <br> speed | Decode <br> % of max | Size | Size <br> % of json |
 | :-------------------------- | ----------------: | -------------------: | ----------------: | -------------------: | ---: | ------------------: |
 | schemapack(no validation)   |       6,983 kop/s |                 100% |       18,173 kops |                 100% |  13B |                 13% |
-| binpackr(no validation)     |       6,920 kop/s |                  99% |       15,953 kops |                  88% |  13B |                 13% |
-| binpackr                    |       6,816 kop/s |                  98% |       16,657 kops |                  92% |  13B |                 13% |
+| binio(no validation)        |       6,920 kop/s |                  99% |       15,953 kops |                  88% |  13B |                 13% |
+| binio                       |       6,816 kop/s |                  98% |       16,657 kops |                  92% |  13B |                 13% |
 | schemapack                  |       6,727 kop/s |                  96% |       17,801 kops |                  98% |  13B |                 13% |
 | avro                        |       4,999 kop/s |                  72% |       14,704 kops |                  81% |  15B |                 15% |
 | msgpackr(shared structures) |       1,902 kop/s |                  27% |        6,229 kops |                  34% |  20B |                 20% |
@@ -107,7 +107,7 @@ competition. I encourage you to run the benchmarks with your own objects to see 
 ## Installation
 
 ```js
-const bp = require('binpackr');
+const bio = require('binio');
 ```
 
 On the client, use esbuild/webpack/browserify to automatically include the prerequisite `buffer` shim if you're not
@@ -116,8 +116,8 @@ using it already.
 For example, if you had a file `index.js` with the following:
 
 ```js
-const bp = require('binpackr');
-// More code here using binpackr
+const bio = require('binio');
+// More code here using binio
 ```
 
 You can add the `Buffer` shim by typing `browserify index.js > bundle.js` and then including that file in your HTML.
@@ -130,19 +130,19 @@ Alternatively, just grab the built minified file from the build folder in the Gi
 to your HTML page:
 
 ```html
-<script type="text/javascript" src="binpackr.min.js"></script>
+<script type="text/javascript" src="binio.min.js"></script>
 ```
 
-This will attach it to the window object. In your JavaScript files, the variable will available as `binpackr`. This
-built file only needs to be used on the client, as the `node` server already includes the prerequisite `Buffer`. The
-server should use the unbundled version.
+This will attach it to the window object. In your JavaScript files, the variable will available as `binio`. This built
+file only needs to be used on the client, as the `node` server already includes the prerequisite `Buffer`. The server
+should use the unbundled version.
 
 ## API
 
 ### Build your schema:
 
 ```js
-const personSchema = bp.build({
+const personSchema = bio.build({
   name: 'string',
   age: 'uint8',
   weight: 'float32',
@@ -175,7 +175,7 @@ console.log(object.weight); // 188.5
 The last item in arrays is both optional and able to be repeated. For example, with this schema:
 
 ```js
-const schema = bp.build({
+const schema = bio.build({
   numbers: ['string', 'uint8'],
 });
 ```
@@ -183,16 +183,16 @@ const schema = bp.build({
 All the following objects are valid for it:
 
 ```js
-const obj1 = {numbers: ['binpackr']};
-const obj2 = {numbers: ['binpackr', 10]};
+const obj1 = {numbers: ['binio']};
+const obj2 = {numbers: ['binio', 10]};
 const obj3 = {numbers: ['lubinpackcky', 14, 7]};
-const obj4 = {numbers: ['binpackr', 0, 5, 7]};
+const obj4 = {numbers: ['binio', 0, 5, 7]};
 ```
 
 The last item can also be an array or object, with any amount of nesting. Here's an example schema:
 
 ```js
-const schema = bp.build([{name: 'string', numbers: ['varint'], age: 'uint8'}]);
+const schema = bio.build([{name: 'string', numbers: ['varint'], age: 'uint8'}]);
 ```
 
 And here's an object that conforms to it:
@@ -211,14 +211,14 @@ const obj = [
 speed. Choose between `'ascii'`, `'utf8'`, `'utf16le'`, `'ucs2'`, `'base64'`, `'binary'`, and `'hex'`.
 
 ```js
-bp.setStringEncoding('ascii');
+bio.setStringEncoding('ascii');
 ```
 
 ### Add type aliases:
 
 ```js
-bp.addTypeAlias('int', 'varuint');
-const builtSchema = bp.build(['string', 'int']);
+bio.addTypeAlias('int', 'varuint');
+const builtSchema = bio.build(['string', 'int']);
 const buffer = builtSchema.encode(['dave', 1, 2, 3]);
 const object = builtSchema.decode(buffer);
 console.log(object); // [ 'dave', 1, 2, 3 ]
@@ -233,14 +233,14 @@ The build function takes an optional parameter for validation. If set to false, 
 excluded. Example:
 
 ```js
-const builtSchema = bp.build({sample: 'string'}, false); // Validation checks won't be added to the encode function
+const builtSchema = bio.build({sample: 'string'}, false); // Validation checks won't be added to the encode function
 ```
 
 To avoid having to pass this flag to each call of build, you can instead call `setValidateByDefault` to set the default
 validation strategy. Example:
 
 ```js
-bp.setValidateByDefault(false);
+bio.setValidateByDefault(false);
 ```
 
 Setting the parameter to false will disable validation by default, while true will enable validation by default.
@@ -248,7 +248,7 @@ Setting the parameter to false will disable validation by default, while true wi
 ### Make single item schemas:
 
 ```js
-const builtSchema = bp.build('varint');
+const builtSchema = bio.build('varint');
 const buffer = builtSchema.encode(-350);
 const item = builtSchema.decode(buffer);
 console.log(item); // -350

@@ -11,7 +11,7 @@
       "path": "examples/player/tsconfig.json"
     },
     {
-      "path": "packages/binpackr/tsconfig.json"
+      "path": "packages/binio/tsconfig.json"
     }
   ],
   "files": []

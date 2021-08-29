@@ -501,9 +501,9 @@
     }
   });
 
-  // dist/binpackr.js
-  var require_binpackr = __commonJS({
-    "dist/binpackr.js"(exports) {
+  // dist/codec.js
+  var require_codec = __commonJS({
+    "dist/codec.js"(exports) {
       "use strict";
       Object.defineProperty(exports, "__esModule", { value: true });
       exports.build = exports.setStringEncoding = exports.getStringEncoding = exports.setValidateByDefault = exports.getValidateByDefault = exports.getDataType = exports.addTypeAlias = exports.StringEncoding = void 0;
@@ -936,10 +936,10 @@
       "use strict";
       Object.defineProperty(exports, "__esModule", { value: true });
       var tslib_1 = require_tslib();
-      var bp = tslib_1.__importStar(require_binpackr());
+      var bio = tslib_1.__importStar(require_codec());
       tslib_1.__exportStar(require_types2(), exports);
-      tslib_1.__exportStar(require_binpackr(), exports);
-      exports.default = bp;
+      tslib_1.__exportStar(require_codec(), exports);
+      exports.default = bio;
     }
   });
   require_dist();

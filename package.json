@@ -1,5 +1,5 @@
 {
-  "name": "binpackr",
+  "name": "binio",
   "version": "0.1.0",
   "description": "Create a schema object to encode/decode your JSON in to a compact byte buffer with no overhead.",
   "engines": {
@@ -44,7 +44,7 @@
     "test:ci": "lb-nyc npm run mocha",
     "mocha": "lb-mocha --lang en_US.UTF-8 \"packages/*/dist/__tests__/**/*.js\" \"examples/*/dist/__tests__/**/*.js\"",
     "posttest": "npm run lint",
-    "benchmark": "lerna run --scope @binpackr/benchmark benchmark"
+    "benchmark": "lerna run --scope @binio/benchmark benchmark"
   },
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",

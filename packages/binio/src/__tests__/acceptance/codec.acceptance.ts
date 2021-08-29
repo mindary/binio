@@ -1,5 +1,5 @@
 import {expect} from '@loopback/testlab';
-import {build} from '../../binpackr';
+import {build} from '../../codec';
 import {BTDSchema} from '../../types';
 
 const fixtures = [

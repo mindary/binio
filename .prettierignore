@@ -2,7 +2,7 @@
 /coverage
 packages/*/dist
 packages/*/build
-packages/binpackr/README.md
+packages/binio/README.md
 examples/*/dist
 benchmark/dist
 benchmark/BENCHMARKS.md

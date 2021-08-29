@@ -9,7 +9,7 @@ import {
   setStringEncoding,
   setValidateByDefault,
   StringEncoding,
-} from '../../binpackr';
+} from '../../codec';
 import {BTDDataType, BUILTIN_TYPES, CompiledDecode, CompiledEncode} from '../../types';
 
 describe('Binpack Unit Test', function () {
@@ -103,7 +103,7 @@ describe('Binpack Unit Test', function () {
         string: 'string',
         varuint: 123456,
         varint: 654321,
-        buffer: Buffer.from('Hello Binpackr'),
+        buffer: Buffer.from('Hello Binio'),
       };
 
       it('should have exported compiled encode and compiled decode function for inspection', function () {
@@ -139,7 +139,7 @@ describe('Binpack Unit Test', function () {
 
     it('should decode with array', function () {
       const codec = build('string');
-      expect(codec.decode([...codec.encode('Hello Binpackr')])).equal('Hello Binpackr');
+      expect(codec.decode([...codec.encode('Hello Binio')])).equal('Hello Binio');
       expect(codec.decode([...codec.encode('')])).equal('');
     });
 

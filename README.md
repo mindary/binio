@@ -1,12 +1,12 @@
-# binpackr
+# binio
 
-> binpackr mono project
+> binio mono project
 
 ## Modules
 
-- [binpackr](packages/binpackr): The binpackr main package
-- [@binpackr/player](examples/player): A simple example for binpackr
-- [@binpackr/benchmark](benchmark): The benchmark package
+- [binio](packages/binio): The binio main package
+- [@binio/player](examples/player): A simple example for binio
+- [@binio/benchmark](benchmark): The benchmark package
 
 ## Licence
 

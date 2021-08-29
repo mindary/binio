@@ -1,5 +1,5 @@
 {
-  "name": "binpackr",
+  "name": "binio",
   "description": "The core package to create a schema object to encode/decode your JSON in to a compact byte buffer with no overhead.",
   "version": "0.2.10",
   "keywords": [
@@ -29,11 +29,11 @@
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
     "build": "lb-tsc",
     "postbuild": "node ./scripts/esbuild",
-    "clean": "lb-clean binpackr*.tgz dist *.tsbuildinfo package",
+    "clean": "lb-clean binio*.tgz dist *.tsbuildinfo package",
     "pretest": "npm run clean && npm run build",
     "test": "lb-mocha --allow-console-logs  \"dist/__tests__/**/*.js\"",
     "unit": "lb-mocha --allow-console-logs  \"dist/__tests__/unit/**/*.js\"",
-    "verify": "npm pack && tar xf binpackr*.tgz && tree package && npm run clean"
+    "verify": "npm pack && tar xf binio*.tgz && tree package && npm run clean"
   },
   "dependencies": {
     "ts-essentials": "^8.0.0"
